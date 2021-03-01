@@ -1,6 +1,6 @@
 'use strict';
 const {
-  Model
+  Model, DATEONLY
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
@@ -30,12 +30,25 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    completeStatus: DataTypes.BOOLEAN
+    status: DataTypes.BOOLEAN,
+    due_date: {
+      type: DataTypes.DATEONLY,
+      validate: {
+        isDate: {
+          args: true,
+          msg: 'Must input in Date format'
+        },
+        isAfter: {
+          args: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
+          msg: 'Must More than this date'
+        }
+      }
+    }
   }, {
     sequelize,
     hooks: {
       beforeCreate: (todo) => {
-        todo.completeStatus = false
+        todo.status = false
       }
     },
     modelName: 'Todo',

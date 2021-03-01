@@ -14,8 +14,11 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
-      completeStatus: {
+      status: {
         type: Sequelize.BOOLEAN
+      },
+      due_date: {
+        type: Sequelize.DATEONLY
       },
       createdAt: {
         allowNull: false,
