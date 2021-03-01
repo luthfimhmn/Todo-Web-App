@@ -6,13 +6,28 @@ class TodoController {
             .catch(err => res.status(500).json({ msg: 'Internal Server Error', detailError: err }))
     }
 
+    static getTodoById(req, res) {
+        let id = +req.params.id
+        Todo.findByPk(id)
+            .then(data => {
+                res.status(200).json(data)
+            })
+            .catch(err => {
+                res.status(404).json({ err })
+            })
+    }
+
     static createTodo(req, res) {
         let { title, description, due_date } = req.body
         Todo.create({ title, description, due_date })
             .then(data => res.status(201).json(data))
             .catch(err => {
-                console.log(err);
-                res.status(500).json({ msg: `Internal Server Error`, detailError: err })
+                let detailError = err
+                if (detailError.name === 'SequelizeValidationError') {
+                    res.status(400).json({ msg: detailError.errors[0].message })
+                } else {
+                    res.status(500).json({ msg: `Internal Server Error`, detailError: err })
+                }
             })
     }
 
