@@ -26,20 +26,18 @@ class UserController {
                         const access_token = generateToken({ id: user.id, email: user.email })
                         res.status(200).json({ access_token })
                     } else {
-                        next({ msg: 'Invalid email or password' })
+                        next(err)
                     }
-                } else {
-                    next({ msg: 'Invalid email or password' })
+                }
+                else {
+                    next(err)
                 }
             })
             .catch(err => {
-                // console.log(err);
-                // let errorMessage;
-                // if (err.msg) errorMessage = err.msg
-                // else errorMessage = err.errors[0].message || "Internal Server Error"
-
-                // res.status(500).json({ message: errorMessage })
-                next(err)
+                next({
+                    name: '500',
+                    message: 'Invalid email or password'
+                })
             })
     }
 }

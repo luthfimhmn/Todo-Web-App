@@ -9,9 +9,6 @@ const errorHandler = (err, req, res, next) => {
             details: errors
         })
     }
-    else if (err.name === '400') {
-        res.status(400).json({ message: 'Bad Request' })
-    }
     else if (err.name === '401') {
         res.status(err.name).json({ message: 'Unauthorized' })
     }
@@ -19,7 +16,7 @@ const errorHandler = (err, req, res, next) => {
         res.status(404).json({ message: 'Not Found' })
     }
     else {
-        res.status(500).json({ err })
+        res.status(500).json({ err: err.message })
     }
 }
 

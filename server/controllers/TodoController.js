@@ -8,10 +8,8 @@ class TodoController {
             })
             .catch(err => {
                 next({
-                    code: '500',
-                    detail: err
+                    name: '500'
                 })
-                // res.status(500).json({ msg: 'Internal Server Error', detailError: err })
             })
     }
 
@@ -25,13 +23,11 @@ class TodoController {
                 } else {
                     next({
                         name: '401',
-                        message: 'Unauthorized'
                     })
                 }
             })
             .catch(err => {
-                // res.status(404).json({ err })
-                next({ code: '404', err })
+                next({ name: '404' })
             })
     }
 
