@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const { User } = require('../models');
 const { comparePassword } = require('../helpers/password-helper')
+const { generateToken } = require('../helpers/jwt-helper');
 class UserController {
     static register(req, res) {
         const { email, password } = req.body
@@ -24,7 +25,8 @@ class UserController {
                     const comparedPassword = comparePassword(password, user.password)
                     if (comparedPassword) {
                         //generate jwt
-                        const access_token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET)
+                        const access_token = generateToken({ id: user.id, email: user.email })
+                        // jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET)
                         res.status(200).json({ access_token })
 
                     } else {

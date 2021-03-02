@@ -52,6 +52,40 @@ _Response (500 - Internal Server Error)_
 }
 ```
 
+## Find One Todo
+GET /todos/:id
+
+_Request Header_
+```
+{
+    "acces_token" : "<your access token>"
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```
+    {
+        "id": 1,
+        "title": "Makan malam",
+        "description": "Makan pizza di pinggir jalan",
+        "status": true,
+        "due_date": "2021-03-03",
+        "createdAt": "2021-03-01T12:18:09.649Z",
+        "updatedAt": "2021-03-01T12:38:59.360Z"
+    }
+```
+
+_Response (500 - Internal Server Error)_
+```
+{
+    "message" : "Internal Server Error" 
+}
+```
 
 ## Create Todo
 > POST /todos
