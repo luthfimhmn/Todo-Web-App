@@ -12,10 +12,14 @@ const authenticate = (req, res, next) => {
                 next()
             })
             .catch(err => {
-                throw new Error()
+                next({
+                    name: '401'
+                })
             })
     } catch (error) {
-        res.status(401).json({ message: "Unauthorized" })
+        next({
+            name: '401'
+        })
     }
 }
 
@@ -26,11 +30,15 @@ const authorize = (req, res, next) => {
             if (todo.UserId === req.loggedUser.id) {
                 next()
             } else {
-                throw new Error()
+                next({
+                    name: '401'
+                })
             }
         })
         .catch(err => {
-            res.status(401).json({ message: 'Unauthorized' })
+            next({
+                name: '401'
+            })
         })
 }
 

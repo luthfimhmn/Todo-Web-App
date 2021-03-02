@@ -2,6 +2,7 @@ const router = require('express').Router();
 const TodoController = require('../controllers/TodoController');
 const { authenticate, authorize } = require('../middlewares/auth');
 
+
 router.use(authenticate)
 router.get('/', TodoController.getAllTodo);
 router.post('/', TodoController.createTodo);
