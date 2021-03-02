@@ -34,15 +34,16 @@ class TodoController {
     static editTodo(req, res) {
         let id = +req.params.id
         let { title, description, status, due_date } = req.body
-        Todo.update({ title, description, status, due_date }, { where: { id } })
-            .then(data => res.status(200).json(data))
+        Todo.update({ title, description, status, due_date }, { where: { id }, returning: true })
+            .then(data => res.status(200).json(data[1][0]))
             .catch(err => res.status(500).json({ msg: 'Internal Server Error', detailError: err }))
     }
 
     static updateStatus(req, res) {
         let id = +req.params.id
-        Todo.update({ status: true }, { where: { id }, fields: ['status'] })
-            .then(data => res.status(200).json(data))
+        let { status } = req.body
+        Todo.update({ status }, { where: { id }, fields: ['status'], returning: true })
+            .then(data => res.status(200).json(data[1][0]))
             .catch(err => res.status(500).json({ msg: 'Internal Server Error', detailError: err }))
     }
 
@@ -50,10 +51,7 @@ class TodoController {
         let id = +req.params.id
         Todo.destroy({ where: { id } })
             .then(data => {
-                return Todo.findAll()
-            })
-            .then(data => {
-                res.status(200).json(data)
+                res.status(200).json({ msg: 'Delete Success' })
             })
             .catch(err => res.status(500).json({ msg: 'Internal Server Error', detailError: err }))
     }

@@ -7,7 +7,7 @@ Todo App is an application to manage your todo list. This app has :
 
 ## Restful endpoints
 ## Get all Todos
-> Get all Todos
+> GET /todos
 
 _Request Header_
 ```
@@ -23,14 +23,26 @@ not needed
 
 _Response (200)_
 ```
-{
-    "id": 1,
-    "title": "Makan Siang",
-    "description": "Makan siang di rumah",
-    "updatedAt": "2021-03-01T09:11:42.253Z",
-    "createdAt": "2021-03-01T09:11:42.253Z",
-    "completeStatus": false
-}
+[
+    {
+        "id": 1,
+        "title": "Makan malam",
+        "description": "Makan pizza di pinggir jalan",
+        "status": true,
+        "due_date": "2021-03-03",
+        "createdAt": "2021-03-01T12:18:09.649Z",
+        "updatedAt": "2021-03-01T12:38:59.360Z"
+    },
+    {
+        "id": 2,
+        "title": "Makan malam dirumah",
+        "description": "Makan nasi goreng",
+        "status": false,
+        "due_date": "2021-04-02",
+        "createdAt": "2021-03-02T04:34:23.371Z",
+        "updatedAt": "2021-03-02T04:34:23.371Z"
+    }
+]
 ```
 
 _Response (500 - Internal Server Error)_
@@ -42,7 +54,7 @@ _Response (500 - Internal Server Error)_
 
 
 ## Create Todo
-> Create Todo
+> POST /todos
 
 _Request Header_
 ```
@@ -56,18 +68,20 @@ _Request Body_
 {
     "title" : "<your todo title>",
     "description": "<your desc of your todo>"
+    "due_date" : "<due date of your todo>"
 }
 ```
 
 _Response (201 - Created)_
 ```
 {
-    "id": 1,
-    "title": "Makan Siang",
-    "description": "Makan siang di rumah",
-    "updatedAt": "2021-03-01T09:11:42.253Z",
-    "createdAt": "2021-03-01T09:11:42.253Z",
-    "completeStatus": false
+    "id": 3,
+    "title": "Ngoding",
+    "description": "Ngoding Autentifikasi",
+    "due_date": "2021-04-02",
+    "updatedAt": "2021-03-02T04:47:09.594Z",
+    "createdAt": "2021-03-02T04:47:09.594Z",
+    "status": false
 }
 ```
 
@@ -79,7 +93,7 @@ _Response (500 - Internal Server Error)_
 ```
 
 ## Edit Todo
-> Edit Todo
+> PUT /todos/:id
 
 
 _Request Header_
@@ -94,19 +108,21 @@ _Request Body_
 {
     "title" : "<your todo title>",
     "description": "<your desc of your todo>",
-    "completeStatus" : <true or false status>
+    "due_date" : "<your todo due date>",
+    "status" : <true or false status>
 }
 ```
 
 _Response (200)_
 ```
 {
-    "id": 1,
-    "title": "Makan Malam",
-    "description": "Makan malam di rumah",
-    "updatedAt": "2021-03-01T09:11:42.253Z",
-    "createdAt": "2021-03-01T09:11:42.253Z",
-    "completeStatus": false
+    "id": 2,
+    "title": "Ngoding",
+    "description": "Ngoding Bareng Malem",
+    "status": false,
+    "due_date": "2021-03-03",
+    "createdAt": "2021-03-02T04:34:23.371Z",
+    "updatedAt": "2021-03-02T04:58:01.619Z"
 }
 ```
 
@@ -118,7 +134,7 @@ _Response (500 - Internal Server Error)_
 ```
 
 ## Update Todo Status To Complete
-> Update Todo Status To Complete
+> PATCH /todos/:id
 
 
 _Request Header_
@@ -153,7 +169,7 @@ _Response (500 - Internal Server Error)_
 ```
 
 ## Delete Todo
-> Delete Todo 
+> DELETE /todos/:id 
 
 
 _Request Header_
@@ -170,7 +186,9 @@ id
 
 _Response (200)_
 ```
-
+{
+    "msg": "Delete Success"
+}
 ```
 
 _Response (500 - Internal Server Error)_
