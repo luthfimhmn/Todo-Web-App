@@ -50,7 +50,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-item nav-link active" href="#">Todos </a>
+                    <a class="nav-item nav-link active" href="#" id="link-todos">Todos </a>
                     <a class="nav-item nav-link" href="#" id="link-addTodo">Add Todo</a>
                     <button class="btn btn-primary" id="btn-logout">logout</button>
                 </div>
@@ -58,7 +58,7 @@
         </nav>
 
 
-        <table class="table">
+        <table class="table" id="tbl-todos_w_header">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">No</th>
@@ -98,6 +98,33 @@
             </div>
         </div>
     </div>
+    <!-- End of Page Add Todo -->
+
+    <!-- Page Edit Todo -->
+    <div id="page-edit-todo">
+        <div class="div-center">
+            <div class="content">
+                <h3>Edit Todo</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="title">Todo Title :</label>
+                        <input id="title-edit" type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description :</label>
+                        <input id="desc-edit" type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Due date :</label>
+                        <input id="due_date-edit" type="date" class="form-control">
+                    </div><br>
+                    <button type="submit" class="btn btn-primary" id="btn-editTodo">Add Todo</button>
+                    <hr />
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- End of Page Edit Todo -->
 
 
 

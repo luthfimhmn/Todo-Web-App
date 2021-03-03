@@ -13,7 +13,12 @@ $("document").ready(function () {
 
     $("#btn-addTodo").on("click", (e) => {
         e.preventDefault();
-        addTodo()
+        addTodo();
+    })
+
+    $("#btn-editTodo").on("click", (e) => {
+        e.preventDefault();
+        postEdit()
     })
 
     $("#link-addTodo").on("click", (e) => {
@@ -22,15 +27,13 @@ $("document").ready(function () {
         $("#page-add-todo").show();
         $("#page-todos").hide();
     })
+
+    $("#link-todos").on("click", (e) => {
+        e.preventDefault();
+        checkLocalStorage();
+    })
 })
 
-
-function checkToken() {
-    if (localStorage.getItem.access_token) {
-        $("#page-login").hide()
-        $("#page-todos").show()
-    }
-}
 
 function login() {
     const email = $("#email").val();
@@ -82,7 +85,7 @@ function fetchTodos() {
                         <td>${todo.due_date}</td>
                         <td>
                             <button class="btn btn-primary" onclick="deleteTodo(${todo.id})">Delete</button>
-                            <button class="btn btn-primary">Edit</button>
+                            <button class="btn btn-primary" onclick="getEditTodo(${todo.id})">Edit</button>
                         </td>
                     </tr>
                     `
@@ -125,8 +128,55 @@ function addTodo() {
         })
 }
 
-function editTodo(params) {
+function getEditTodo(id) {
+    $.ajax({
+        url: baseURL + '/todos/' + id,
+        method: 'GET',
+        headers: {
+            access_token: localStorage.access_token
+        }
+    })
+        .done((response) => {
+            let todo = response
+            localStorage.setItem("idTodo", `${todo.id}`)
+            $("#page-login").hide();
+            $("#page-add-todo").hide();
+            $("#page-todos").hide();
+            $("#page-edit-todo").show();
+            $("#title-edit").val(`${todo.title}`)
+            $("#desc-edit").val(`${todo.description}`)
+            $("#due_date-edit").val(`${todo.due_date}`)
+        })
+        .fail(err => {
+            console.log(err);
+        })
+}
 
+function postEdit() {
+    const title = $("#title-edit").val();
+    const description = $("#desc-edit").val();
+    const due_date = $("#due_date-edit").val();
+    const id = localStorage.idTodo
+    $.ajax({
+        url: baseURL + '/todos/' + id,
+        method: 'PUT',
+        headers: {
+            access_token: localStorage.access_token
+        },
+        data: {
+            title,
+            description,
+            due_date
+        }
+    })
+        .done(() => {
+            localStorage.removeItem("idTodo");
+            fetchTodos();
+            checkLocalStorage();
+        })
+        .fail((err) => {
+            console.log(err);
+        })
 }
 
 function deleteTodo(id) {
@@ -155,10 +205,12 @@ function checkLocalStorage() {
         $("#page-login").hide();
         $("#page-add-todo").hide();
         $("#page-todos").show();
+        $("#page-edit-todo").hide();
         fetchTodos();
     } else {
         $("#page-login").show();
         $("#page-add-todo").hide();
         $("#page-todos").hide();
+        $("#page-edit-todo").hide();
     }
 }
