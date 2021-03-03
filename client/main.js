@@ -21,8 +21,22 @@ $("document").ready(function () {
         postEdit()
     })
 
+    $("#btn-register").on("click", (e) => {
+        e.preventDefault();
+        register();
+    })
+
+    $("#link-register").on("click", (e) => {
+        e.preventDefault();
+        $("#page-login").hide();
+        $("#page-add-todo").hide();
+        $("#page-todos").hide();
+        $("#page-register").show();
+    })
+
     $("#link-addTodo").on("click", (e) => {
         e.preventDefault();
+        $("#navbar").show();
         $("#page-login").hide();
         $("#page-add-todo").show();
         $("#page-todos").hide();
@@ -60,8 +74,25 @@ function login() {
         })
 }
 
-function register(params) {
+function register() {
+    const email = $("#email-regis").val();
+    const password = $("#password-regis").val();
 
+    $.ajax({
+        url: baseURL + "/register",
+        method: "POST",
+        data: {
+            email,
+            password
+        }
+    })
+        .done((response) => {
+            console.log(response);
+            checkLocalStorage();
+        })
+        .fail((err) => {
+            console.log(err);
+        })
 }
 
 function fetchTodos() {
@@ -206,11 +237,13 @@ function checkLocalStorage() {
         $("#page-add-todo").hide();
         $("#page-todos").show();
         $("#page-edit-todo").hide();
+        $("#page-register").hide();
         fetchTodos();
     } else {
         $("#page-login").show();
         $("#page-add-todo").hide();
         $("#page-todos").hide();
         $("#page-edit-todo").hide();
+        $("#page-register").hide();
     }
 }
