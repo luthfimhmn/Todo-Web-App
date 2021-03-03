@@ -4,7 +4,7 @@ class TodoController {
         let UserId = req.loggedUser.id
         Todo.findAll({ where: { UserId } })
             .then(data => {
-                res.status(200).json(data)
+                res.status(200).json({ todos: data })
             })
             .catch(err => {
                 next({

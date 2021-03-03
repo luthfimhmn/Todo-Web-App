@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Page Login -->
+    <div class="back" id="page-login">
+        <div class="div-center">
+            <div class="content">
+
+
+                <h3>Login Fancy Todo</h3>
+                <hr />
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password">
+                    </div><br>
+                    <button type="submit" class="btn btn-primary" id="btn-login">Login</button>
+                    <hr />
+                </form>
+
+            </div>
+            </span>
+        </div>
+    </div>
+    <!-- End of Page Login -->
+
+    <!-- Page Todos -->
+    <div id="page-todos">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Fancy Todo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link active" href="#">Todos </a>
+                    <a class="nav-item nav-link" href="#" id="link-addTodo">Add Todo</a>
+                    <button class="btn btn-primary" id="btn-logout">logout</button>
+                </div>
+            </div>
+        </nav>
+
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Due Date</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tbl-todos">
+            </tbody>
+        </table>
+    </div>
+    <!-- End of Page Todos -->
+
+    <!-- Page Add Todo -->
+    <div id="page-add-todo">
+        <div class="div-center">
+            <div class="content">
+                <h3>Add Todo</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="title">Todo Title :</label>
+                        <input id="todo-title" type="text" class="form-control" placeholder="Todo's Title">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description :</label>
+                        <input id="todo-desc" type="text" class="form-control" placeholder="Todo's Desc">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Due date :</label>
+                        <input id="todo-due_date" type="date" class="form-control">
+                    </div><br>
+                    <button type="submit" class="btn btn-primary" id="btn-addTodo">Add Todo</button>
+                    <hr />
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./main.js"></script>
+</body>
+
+</html>
