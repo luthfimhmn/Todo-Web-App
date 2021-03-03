@@ -114,9 +114,11 @@ function fetchTodos() {
                         <td>${todo.title}</td>
                         <td>${todo.description}</td>
                         <td>${todo.due_date}</td>
+                        <td>${todo.status}</td>
                         <td>
                             <button class="btn btn-primary" onclick="deleteTodo(${todo.id})">Delete</button>
                             <button class="btn btn-primary" onclick="getEditTodo(${todo.id})">Edit</button>
+                            <button class="btn btn-primary" onclick="completeTodo(${todo.id})">Complete</button>
                         </td>
                     </tr>
                     `
@@ -202,7 +204,6 @@ function postEdit() {
     })
         .done(() => {
             localStorage.removeItem("idTodo");
-            fetchTodos();
             checkLocalStorage();
         })
         .fail((err) => {
@@ -246,4 +247,24 @@ function checkLocalStorage() {
         $("#page-edit-todo").hide();
         $("#page-register").hide();
     }
+}
+
+function completeTodo(id) {
+    $.ajax({
+        url: baseURL + '/todos/' + id,
+        method: 'PATCH',
+        headers: {
+            access_token: localStorage.access_token
+        },
+        data: {
+            status: true
+        }
+    })
+        .done((response) => {
+            fetchTodos()
+        })
+        .fail((err) => {
+            console.log(err);
+        })
+
 }
