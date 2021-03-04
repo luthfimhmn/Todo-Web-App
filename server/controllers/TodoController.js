@@ -38,12 +38,7 @@ class TodoController {
             .then(data => res.status(201).json(data))
             .catch(err => {
                 next(err)
-                // let detailError = err
-                // if (detailError.name === 'SequelizeValidationError') {
-                //     res.status(400).json({ msg: detailError.errors[0].message })
-                // } else {
-                //     res.status(500).json({ msg: `Internal Server Error`, detailError: err })
-                // }
+
             })
     }
 
@@ -54,7 +49,6 @@ class TodoController {
             .then(data => res.status(200).json(data[1][0]))
             .catch(err => {
                 next(err)
-                // res.status(500).json({ msg: 'Internal Server Error', detailError: err })
             })
     }
 
@@ -65,7 +59,6 @@ class TodoController {
             .then(data => res.status(200).json(data[1][0]))
             .catch(err => {
                 next(err)
-                // res.status(500).json({ msg: 'Internal Server Error', detailError: err })
             })
     }
 
@@ -77,7 +70,6 @@ class TodoController {
             })
             .catch(err => {
                 next(err)
-                // res.status(500).json({ msg: 'Internal Server Error', detailError: err })
             })
     }
 }

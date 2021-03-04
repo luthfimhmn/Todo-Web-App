@@ -24,7 +24,6 @@ const authenticate = (req, res, next) => {
 }
 
 const authorize = (req, res, next) => {
-    console.log('masuk');
     let todoId = +req.params.id
     Todo.findByPk(todoId)
         .then(todo => {

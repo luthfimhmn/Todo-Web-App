@@ -61,10 +61,9 @@ class UserController {
                 }
             })
                 .then(user => {
-                    let payload = { id: user.id, email: user.email }
-                    res.status(200).json({
-                        access_token: generateToken(payload)
-                    })
+                    let payload = { id: user[0].id, email: user[0].email }
+                    const access_token = generateToken(payload)
+                    res.status(200).json({ access_token })
                 })
         }
         verify().catch(console.error);
