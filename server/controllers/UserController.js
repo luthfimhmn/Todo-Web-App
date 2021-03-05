@@ -36,7 +36,7 @@ class UserController {
             })
             .catch(err => {
                 next({
-                    name: '500',
+                    name: '400',
                     message: 'Invalid email or password'
                 })
             })

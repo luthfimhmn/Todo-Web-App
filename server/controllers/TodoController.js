@@ -27,7 +27,7 @@ class TodoController {
                 }
             })
             .catch(err => {
-                next({ name: '404' })
+                next({ name: '500' })
             })
     }
 

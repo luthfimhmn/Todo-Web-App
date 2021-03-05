@@ -27,13 +27,20 @@ const authorize = (req, res, next) => {
     let todoId = +req.params.id
     Todo.findByPk(todoId)
         .then(todo => {
-            if (todo.UserId === req.loggedUser.id) {
-                next()
+            if (!todo) {
+                next({ name: '404' })
             } else {
-                next({
-                    name: '401'
-                })
+                if (todo.UserId === req.loggedUser.id) {
+                    next()
+                }
             }
+            // if (todo.UserId === req.loggedUser.id) {
+            //     next()
+            // } else {
+            //     next({
+            //         name: '401'
+            //     })
+            // }
         })
         .catch(err => {
             next({

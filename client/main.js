@@ -57,10 +57,6 @@ function onSignIn(googleUser) {
         data: {
             token: googleUser.getAuthResponse().id_token
         }
-        // ,
-        // headers: {
-        //     access_token: localStorage.access_token
-        // }
     })
         .done((response) => {
             localStorage.setItem("access_token", response.access_token)
