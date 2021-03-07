@@ -21,6 +21,11 @@ $("document").ready(function () {
         postEdit()
     })
 
+    $(".cancel").on("click", (e) => {
+        e.preventDefault();
+        checkLocalStorage()
+    })
+
     $("#btn-register").on("click", (e) => {
         e.preventDefault();
         register();
@@ -32,6 +37,7 @@ $("document").ready(function () {
         $("#page-add-todo").hide();
         $("#page-todos").hide();
         $("#page-register").show();
+        $("#footerAddTodo").hide();
     })
 
     $("#link-addTodo").on("click", (e) => {
@@ -40,11 +46,7 @@ $("document").ready(function () {
         $("#page-login").hide();
         $("#page-add-todo").show();
         $("#page-todos").hide();
-    })
-
-    $("#link-todos").on("click", (e) => {
-        e.preventDefault();
-        checkLocalStorage();
+        $("#footerAddTodo").hide();
     })
 
 })
@@ -85,10 +87,20 @@ function login() {
     })
         .done((response) => {
             localStorage.setItem("access_token", response.access_token)
+            Swal.fire(
+                'Login Success!',
+                'success'
+            )
             checkLocalStorage();
         })
         .fail((err) => {
             console.log(err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Email or password is wrong!',
+                footer: '<a href>Why do I have this issue?</a>'
+            })
         })
         .always(() => {
             $("#email").val("")
@@ -109,7 +121,10 @@ function register() {
         }
     })
         .done((response) => {
-            console.log(response);
+            Swal.fire(
+                'Register Success!',
+                'success, Lets login!!'
+            )
             checkLocalStorage();
         })
         .fail((err) => {
@@ -127,23 +142,30 @@ function fetchTodos() {
         }
     })
         .done((response) => {
+            const userEmail = response.user
+            $("#welcome").html(`Welcome <span><h3>${userEmail}</h3></span>`)
             const todos = response.todos
-            todos.forEach((todo, i) => {
+            let month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+            todos.forEach((todo) => {
+                if (todo.status === true) {
+                    todo.status = 'Finished'
+                } else {
+                    todo.status = 'Unfinished'
+                }
+                let date = new Date(todo.due_date)
                 $("#tbl-todos").append(
                     `
-                    <tr>
-                        <th scope="row">${i + 1}</th>
-                        <td>${todo.title}</td>
-                        <td>${todo.description}</td>
-                        <td>${todo.due_date}</td>
-                        <td>${todo.status}</td>
-                        <td>
-                            <button class="btn btn-primary" onclick="deleteTodo(${todo.id})">Delete</button>
-                            <button class="btn btn-primary" onclick="getEditTodo(${todo.id})">Edit</button>
-                            <button class="btn btn-primary" onclick="completeTodo(${todo.id})">Complete</button>
-                        </td>
-                    </tr>
-                    `
+                <tr>
+                    <td onclick="getEditTodo(${todo.id})">${todo.status}</td>
+                    <td onclick="getEditTodo(${todo.id})">${todo.title}</td>
+                    <td onclick="getEditTodo(${todo.id})" class="descriptiontodo">${todo.description}</td>
+                    <td onclick="getEditTodo(${todo.id})">${date.getDate()} ${month[date.getMonth()]} ${date.getFullYear()}</td>
+                    <td>
+                    <button class="btn btn-primary" onclick="completeTodo(${todo.id})">Complete</button> &nbsp; &nbsp;
+                    <img onclick="deleteTodo(${todo.id})" src="./img/trash.png" alt="" width="20px" height="25" >
+                    </td>
+                </tr>
+                `
                 )
             });
         })
@@ -173,7 +195,12 @@ function addTodo() {
             checkLocalStorage()
         })
         .fail((err) => {
-            console.log(err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Something is wrong',
+                text: `${err.responseJSON.message}`
+            })
+            console.log(err.responseJSON.message);
         })
         .always(() => {
             $("#todo-title").val("");
@@ -196,6 +223,7 @@ function getEditTodo(id) {
             $("#page-login").hide();
             $("#page-add-todo").hide();
             $("#page-todos").hide();
+            $("#footerAddTodo").hide();
             $("#page-edit-todo").show();
             $("#title-edit").val(`${todo.title}`)
             $("#desc-edit").val(`${todo.description}`)
@@ -228,24 +256,46 @@ function postEdit() {
             checkLocalStorage();
         })
         .fail((err) => {
-            console.log(err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Something is wrong',
+                text: `${err.responseJSON.message}`
+            })
+            console.log(err.responseJSON.message);
         })
 }
 
 function deleteTodo(id) {
-    $.ajax({
-        url: baseURL + '/todos/' + id,
-        method: 'DELETE',
-        headers: {
-            access_token: localStorage.access_token
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: baseURL + '/todos/' + id,
+                method: 'DELETE',
+                headers: {
+                    access_token: localStorage.access_token
+                }
+            })
+                .done(() => {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your todo has been deleted.',
+                        'success'
+                    )
+                    fetchTodos()
+                })
+                .fail(err => {
+                    console.log(err);
+                })
         }
     })
-        .done(() => {
-            fetchTodos()
-        })
-        .fail(err => {
-            console.log(err);
-        })
 }
 
 function logout() {
@@ -254,6 +304,10 @@ function logout() {
     auth2.signOut().then(function () {
         console.log("User signed out.");
     })
+    Swal.fire(
+        `You've logged out`,
+        'logout success'
+    )
     checkLocalStorage();
 }
 
@@ -264,6 +318,7 @@ function checkLocalStorage() {
         $("#page-todos").show();
         $("#page-edit-todo").hide();
         $("#page-register").hide();
+        $("#footerAddTodo").show();
         fetchTodos();
     } else {
         $("#page-login").show();
@@ -271,6 +326,7 @@ function checkLocalStorage() {
         $("#page-todos").hide();
         $("#page-edit-todo").hide();
         $("#page-register").hide();
+        $("#footerAddTodo").hide();
     }
 }
 
@@ -286,6 +342,7 @@ function completeTodo(id) {
         }
     })
         .done((response) => {
+            Swal.fire('Saved!', 'Todo Completed!', 'success')
             fetchTodos()
         })
         .fail((err) => {
@@ -293,3 +350,5 @@ function completeTodo(id) {
         })
 
 }
+
+

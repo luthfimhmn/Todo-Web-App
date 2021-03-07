@@ -2,9 +2,9 @@ const { Todo } = require('../models');
 class TodoController {
     static getAllTodo(req, res, next) {
         let UserId = req.loggedUser.id
-        Todo.findAll({ where: { UserId } })
+        Todo.findAll({ where: { UserId }, order: [['id', 'DESC']] })
             .then(data => {
-                res.status(200).json({ todos: data })
+                res.status(200).json({ todos: data, user: req.loggedUser.email })
             })
             .catch(err => {
                 next({

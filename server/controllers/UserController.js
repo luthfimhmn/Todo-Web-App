@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken')
 const { User } = require('../models');
 const { comparePassword } = require('../helpers/password-helper')
 const { generateToken } = require('../helpers/jwt-helper');
@@ -8,7 +7,12 @@ class UserController {
         const { email, password } = req.body
         User.create({ email, password })
             .then(user => {
-                res.status(201).json({ success: true, message: "user created", user })
+                res.status(201).json({
+                    success: true, message: "user created", user: {
+                        id: user.id,
+                        email: user.email
+                    }
+                })
             })
             .catch(err => {
                 next(err)
@@ -27,11 +31,17 @@ class UserController {
                         const access_token = generateToken({ id: user.id, email: user.email })
                         res.status(200).json({ access_token })
                     } else {
-                        next(err)
+                        next({
+                            name: '400',
+                            message: 'Invalid email or password'
+                        })
                     }
                 }
                 else {
-                    next(err)
+                    next({
+                        name: '400',
+                        message: 'Invalid email or password'
+                    })
                 }
             })
             .catch(err => {

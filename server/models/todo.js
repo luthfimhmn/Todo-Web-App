@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         isAfter: {
           args: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
-          msg: 'Due date must More than this date'
+          msg: `Due date must More than today's date`
         }
       }
     }

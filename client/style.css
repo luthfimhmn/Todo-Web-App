@@ -1,3 +1,21 @@
+h1,h2,h3,h4{
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 700;
+}
+.font{
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 700;
+}
+p{
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 400;
+}
+
+.label{
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 250;
+}
+
 .back {
   background: #e2e2e2;
   width: 100%;
@@ -27,4 +45,18 @@
 div.content {
   display: table-cell;
   vertical-align: middle;
+}
+
+.table{
+    background: rgba(255,255,255,0.5);
+}
+
+.descriptiontodo{
+    word-wrap: break-word;
+    min-width: 160px;
+    max-width: 160px;
+}
+
+#footerAddTodo{
+  background: rgba(155, 202, 233, 0.5);
 }
