@@ -34,13 +34,6 @@ const authorize = (req, res, next) => {
                     next()
                 }
             }
-            // if (todo.UserId === req.loggedUser.id) {
-            //     next()
-            // } else {
-            //     next({
-            //         name: '401'
-            //     })
-            // }
         })
         .catch(err => {
             next({
