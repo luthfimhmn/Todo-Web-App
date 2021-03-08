@@ -1,3 +1,4 @@
+// const baseURL = 'https://fancy-todo-application.herokuapp.com'
 const baseURL = 'http://localhost:3000'
 $("document").ready(function () {
     checkLocalStorage()
@@ -128,6 +129,11 @@ function register() {
             checkLocalStorage();
         })
         .fail((err) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Something is wrong',
+                text: `${err.responseJSON.message}`
+            })
             console.log(err);
         })
 }
@@ -162,6 +168,7 @@ function fetchTodos() {
                     <td onclick="getEditTodo(${todo.id})">${date.getDate()} ${month[date.getMonth()]} ${date.getFullYear()}</td>
                     <td>
                     <button class="btn btn-primary" onclick="completeTodo(${todo.id})">Complete</button> &nbsp; &nbsp;
+                    <button class="btn btn-primary" onclick="getEditTodo(${todo.id})">Edit Todo</button> &nbsp; &nbsp;
                     <img onclick="deleteTodo(${todo.id})" src="./img/trash.png" alt="" width="20px" height="25" >
                     </td>
                 </tr>
